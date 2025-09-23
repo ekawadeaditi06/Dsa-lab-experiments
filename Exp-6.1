@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Node structure
+struct Node {
+    char url[100];
+    struct Node* next;
+};
+
+struct Node* top = NULL;
+
+// Push (visit new page)
+void visitPage(char* url) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(newNode->url, url);
+    newNode->next = top;
+    top = newNode;
+    printf("Visited: %s\n", url);
+}
+
+// Pop (go back to previous page)
+void goBack() {
+    if (top == NULL) {
+        printf("No history available!\n");
+        return;
+    }
+    printf("Going back from: %s\n", top->url);
+    struct Node* temp = top;
+    top = top->next;
+    free(temp);
+}
+
+// Display history
+void showHistory() {
+    struct Node* temp = top;
+    if (temp == NULL) {
+        printf("History is empty!\n");
+        return;
+    }
+    printf("\n--- Browser History ---\n");
+    while (temp != NULL) {
+        printf("%s\n", temp->url);
+        temp = temp->next;
+    }
+}
+
+int main() {
+    visitPage("google.com");
+    visitPage("github.com");
+    visitPage("openai.com");
+
+    showHistory();
+
+    goBack();
+    showHistory();
+
+    return 0;
+}
