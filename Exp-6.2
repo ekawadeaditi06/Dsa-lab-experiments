@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Node structure
+struct Node {
+    char name[50];
+    struct Node* next;
+};
+
+struct Node* front = NULL;
+struct Node* rear = NULL;
+
+// Enqueue (customer enters queue)
+void bookTicket(char* name) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(newNode->name, name);
+    newNode->next = NULL;
+    if (rear == NULL) {
+        front = rear = newNode;
+    } else {
+        rear->next = newNode;
+        rear = newNode;
+    }
+    printf("%s booked ticket!\n", name);
+}
+
+// Dequeue (customer gets served)
+void serveCustomer() {
+    if (front == NULL) {
+        printf("No customers in queue!\n");
+        return;
+    }
+    printf("Serving: %s\n", front->name);
+    struct Node* temp = front;
+    front = front->next;
+    if (front == NULL) rear = NULL;
+    free(temp);
+}
+
+// Display queue
+void showQueue() {
+    struct Node* temp = front;
+    if (temp == NULL) {
+        printf("Queue is empty!\n");
+        return;
+    }
+    printf("\n--- Ticket Queue ---\n");
+    while (temp != NULL) {
+        printf("%s\n", temp->name);
+        temp = temp->next;
+    }
+}
+
+int main() {
+    bookTicket("Aditi");
+    bookTicket("Rahul");
+    bookTicket("Sneha");
+
+    showQueue();
+
+    serveCustomer();
+    showQueue();
+
+    return 0;
+}
