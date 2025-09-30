@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* head = NULL;
+
+// Function to insert a node at the end
+void insertEnd(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    if (head == NULL) {
+        head = newNode;
+        newNode->next = head;
+    } else {
+        struct Node* temp = head;
+        while (temp->next != head) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->next = head;
+    }
+}
+
+// Function to delete a node from the beginning
+void deleteBegin() {
+    if (head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+    struct Node* temp = head;
+    if (head->next == head) { // Only one node
+        head = NULL;
+    } else {
+        struct Node* last = head;
+        while (last->next != head) {
+            last = last->next;
+        }
+        last->next = head->next;
+        head = head->next;
+    }
+    free(temp);
+    printf("Node deleted from beginning.\n");
+}
+
+// Function to display the list
+void display() {
+    if (head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+    struct Node* temp = head;
+    printf("Circular Linked List: ");
+    do {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf("\n");
+}
+
+// Main function
+int main() {
+    int choice, value;
+    do {
+        printf("\n1. Insert at End\n2. Delete from Beginning\n3. Display\n4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch(choice) {
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &value);
+                insertEnd(value);
+                break;
+            case 2:
+                deleteBegin();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice!\n");
+        }
+    } while(choice != 4);
+    return 0;
+}
