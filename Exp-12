@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+int binarySearch(int arr[], int n, int key) {
+    int low = 0, high = n - 1;
+
+    while (low <= high) {
+        int mid = (low + high) / 2;
+
+        if (arr[mid] == key)
+            return mid;
+        else if (arr[mid] < key)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+    return -1;
+}
+
+int main() {
+    int prices[] = {100, 150, 199, 250, 300, 499, 799, 999};
+    int n = sizeof(prices) / sizeof(prices[0]);
+    int key;
+
+    printf("Available product prices (sorted):\n");
+    for (int i = 0; i < n; i++)
+        printf("%d ", prices[i]);
+
+    printf("\n\nEnter price to search: ");
+    scanf("%d", &key);
+
+    int index = binarySearch(prices, n, key);
+
+    if (index != -1)
+        printf("Price %d found at position %d.\n", key, index);
+    else
+        printf("Price not found in the list.\n");
+
+    return 0;
+}
