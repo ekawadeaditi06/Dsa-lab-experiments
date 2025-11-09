@@ -67,4 +67,43 @@ void display(int a[], int n) {
 int main() {
     int a[100], n, choice;
 
-    print
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter elements:\n");
+    for (int i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+
+    do {
+        printf("\n--- Sorting Menu ---\n");
+        printf("1. Merge Sort\n");
+        printf("2. Quick Sort\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                mergeSort(a, 0, n - 1);
+                printf("Array after Merge Sort: ");
+                display(a, n);
+                break;
+
+            case 2:
+                quickSort(a, 0, n - 1);
+                printf("Array after Quick Sort: ");
+                display(a, n);
+                break;
+
+            case 3:
+                printf("Exiting...\n");
+                break;
+
+            default:
+                printf("Invalid choice!\n");
+        }
+
+    } while (choice != 3);
+
+    return 0;
+}
