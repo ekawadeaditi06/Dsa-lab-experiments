@@ -1,0 +1,133 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *prev;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+// Create a new node
+struct Node* createNode(int val) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = val;
+    newNode->prev = newNode->next = NULL;
+    return newNode;
+}
+
+// Insert at end
+void insertEnd(int val) {
+    struct Node* newNode = createNode(val);
+
+    if (head == NULL) {
+        head = newNode;
+        head->next = head;
+        head->prev = head;
+        return;
+    }
+
+    struct Node* last = head->prev;
+
+    last->next = newNode;
+    newNode->prev = last;
+    newNode->next = head;
+    head->prev = newNode;
+}
+
+// Delete a node
+void deleteNode(int val) {
+    if (head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    struct Node* temp = head;
+
+    // Search node
+    while (temp->data != val) {
+        temp = temp->next;
+        if (temp == head) {
+            printf("Node not found!\n");
+            return;
+        }
+    }
+
+    // Only one node
+    if (temp->next == temp && temp->prev == temp) {
+        head = NULL;
+        free(temp);
+        return;
+    }
+
+    // If deleting head
+    if (temp == head) {
+        head = head->next;
+    }
+
+    temp->prev->next = temp->next;
+    temp->next->prev = temp->prev;
+
+    free(temp);
+}
+
+// Display list
+void display() {
+    if (head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    struct Node* temp = head;
+    printf("Circular DLL: ");
+
+    do {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+
+    printf("\n");
+}
+
+int main() {
+    int choice, val;
+
+    do {
+        printf("\n--- Circular Doubly Linked List Menu ---\n");
+        printf("1. Insert at End\n");
+        printf("2. Delete Node\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &val);
+                insertEnd(val);
+                break;
+
+            case 2:
+                printf("Enter value to delete: ");
+                scanf("%d", &val);
+                deleteNode(val);
+                break;
+
+            case 3:
+                display();
+                break;
+
+            case 4:
+                printf("Exiting...\n");
+                break;
+
+            default:
+                printf("Invalid choice!\n");
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}
